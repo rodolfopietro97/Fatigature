@@ -1,3 +1,6 @@
+import random
+from time import sleep
+
 from CummareApi.CummreClient import publish
 from Utils.ConfigurationFileHandler import ConfigurationFileHandler
 from Utils.Constants import CONFIGURATION_FILE_PATH
@@ -22,8 +25,11 @@ if __name__ == '__main__':
         "amount": sys.argv[3]
     }
 
-    # Send transaction and wait result
-    if publish(cummare_server=cummare_server, topic=transaction_topic, message=json.dumps(transaction)):
-        print(f"{cummare_server} - RECEIVED")
-    else:
-        print(f"{cummare_server} - REJECTED")
+    while True:
+        # Send transaction and wait result
+        transaction['amount'] = random.randint(0, 100000)
+        if publish(cummare_server=cummare_server, topic=transaction_topic, message=json.dumps(transaction)):
+            print(f"{cummare_server} - RECEIVED")
+        else:
+            print(f"{cummare_server} - REJECTED")
+        sleep(0.1)

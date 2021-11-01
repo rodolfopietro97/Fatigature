@@ -2,6 +2,7 @@ import base64
 import json
 import sys
 import time
+from time import sleep
 
 import rsa
 
@@ -45,26 +46,32 @@ if __name__ == '__main__':
 
     waiting_time = int(sys.argv[2])
 
-    (public_key, private_key) = rsa.newkeys(1024)
+    while True:
+        (public_key, private_key) = rsa.newkeys(1024)
 
-    str_public_key = public_key.save_pkcs1("PEM").decode(MESSAGE_ENCODING)
+        str_public_key = public_key.save_pkcs1("PEM").decode(MESSAGE_ENCODING)
 
-    random_request = {
-        "queue": queue_to_use,
-        "public_key": str_public_key
-    }
+        random_request = {
+            "queue": queue_to_use,
+            "public_key": str_public_key
+        }
 
-    # Send random request
-    if publish(cummare_server=cummare_server, topic=random_request_topic, message=json.dumps(random_request)):
-        print(f"{cummare_server} - RECEIVED")
-    else:
-        print(f"{cummare_server} - REJECTED")
+        # Send random request
+        publish(cummare_server=cummare_server, topic=random_request_topic, message=json.dumps(random_request))
+        # if publish(cummare_server=cummare_server, topic=random_request_topic, message=json.dumps(random_request)):
+        #     print(f"{cummare_server} - RECEIVED")
+        # else:
+        #     print(f"{cummare_server} - REJECTED")
 
-    # Wait random response
-    start = time.time()
-
-    while (time.time() - start) <= waiting_time:
+        # Wait random response
+        # start = time.time()
+        #
+        # while (time.time() - start) <= 1:
+        sleep(0.1)
         subscribe(cummare_server=cummare_server, topic=random_responses_topic, process_function=fetch_random_responses)
-        time.sleep(waiting_time / 4)
+        # time.sleep(waiting_time / 4)
 
-    print("\n".join(set(random_responses)))
+        with open("results", 'a') as file:
+            for random in list(set(random_responses)):
+                file.write(random + "\n")
+        random_responses.clear()
