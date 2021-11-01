@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package subscribe;
+
+/**
+ * Publish topic proto.
+ *
+ * In the PUB-SUB part, it is the PUB
+ */
+service SubscribeTopic {
+
+    /**
+    * Publish a message
+    */
+    rpc subscribeTopic (SubscribeRequest) returns (stream SubscribeResponse) {}
+}
+
+/**
+ * Publish message request
+ */
+message SubscribeRequest {
+
+    /**
+    * Topic to subscribe
+    */
+    string topic = 1;
+}
+
+/**
+ * Publish message response
+ */
+message SubscribeResponse {
+
+    /**
+     * Message of topic
+     */
+    string message = 1;
+}

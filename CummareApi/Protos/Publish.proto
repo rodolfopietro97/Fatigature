@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package publish;
+
+/**
+ * Publish topic proto.
+ *
+ * In the PUB-SUB part, it is the PUB
+ */
+service PublishTopic {
+
+  /**
+   * Publish a message
+   */
+  rpc publishMessage (PublishRequest) returns (PublishResponse) {}
+}
+
+/**
+ * Publish message request
+ */
+message PublishRequest {
+
+  /**
+   * Topic to publish
+   */
+  string topic = 1;
+
+  /**
+   * Message of topic
+   */
+  string message = 2;
+}
+
+/**
+ * Publish message response
+ */
+message PublishResponse {
+
+  /**
+   * Ack of request (if request is received or not)
+   */
+  bool ack = 1;
+}
