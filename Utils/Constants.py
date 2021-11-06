@@ -14,6 +14,15 @@ Configuration file contains informations of CasoCavallo
 """
 
 
+BOSS_CONFIGURATION_FILE_PATH = "../Configurations/BossConfig.json"
+"""
+Path of configuration file of CasoCavallo.
+
+Configuration file contains informations of CasoCavallo
+"""
+
+
+
 MESSAGE_ENCODING = 'ISO-8859-1'
 """
 Encoding format for messages

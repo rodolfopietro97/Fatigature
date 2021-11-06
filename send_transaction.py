@@ -33,3 +33,4 @@ if __name__ == '__main__':
         else:
             print(f"{cummare_server} - REJECTED")
         sleep(0.1)
+        # sleep(1)

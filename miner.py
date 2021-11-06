@@ -69,4 +69,4 @@ if __name__ == '__main__':
 
         # 2) Wait response
 
-        sleep(0.01)
+        sleep(0.1)

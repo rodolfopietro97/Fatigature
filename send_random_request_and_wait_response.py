@@ -64,14 +64,21 @@ if __name__ == '__main__':
         #     print(f"{cummare_server} - REJECTED")
 
         # Wait random response
-        # start = time.time()
-        #
-        # while (time.time() - start) <= 1:
-        sleep(0.1)
+        start = time.time()
+
+        # while (time.time() - start) <= 2:
+        sleep(0.2)
         subscribe(cummare_server=cummare_server, topic=random_responses_topic, process_function=fetch_random_responses)
         # time.sleep(waiting_time / 4)
 
-        with open("results", 'a') as file:
-            for random in list(set(random_responses)):
-                file.write(random + "\n")
+        print(list(set(random_responses)))
+        # with open("binary_test", 'a') as file:
+        #     for response in list(set(random_responses)):
+        #         file.write(response + "\n")
+
         random_responses.clear()
+        sleep(0.01)
+# with open("results", 'a') as file:
+    #     for random in list(set(random_responses)):
+    #         file.write(random + "\n")
+    # random_responses.clear()

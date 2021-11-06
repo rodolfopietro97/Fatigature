@@ -7,8 +7,7 @@ from Mining.ProofOfLottery import ProofOfLottery
 import json
 
 from Utils.ConfigurationFileHandler import ConfigurationFileHandler
-from Utils.Constants import CONFIGURATION_FILE_PATH
-
+from Utils.Constants import CONFIGURATION_FILE_PATH, BOSS_CONFIGURATION_FILE_PATH
 
 current_round_must_update = False
 """
@@ -48,6 +47,8 @@ if __name__ == '__main__':
     # Init parameters
     cummare_server = ConfigurationFileHandler.get_generic_property(CONFIGURATION_FILE_PATH, "CummareServer")
 
+    round_duration = int(ConfigurationFileHandler.get_generic_property(BOSS_CONFIGURATION_FILE_PATH, "roundDuration"))
+
     while True:
         # 1) Generate current lottery id
         current_lottery['lottery_id'] = current_lottery['lottery_id'] + 1
@@ -56,7 +57,7 @@ if __name__ == '__main__':
         start = time.time()
         publish(cummare_server=cummare_server, topic="current_lottery", message=str(json.dumps(current_lottery)))
 
-        while (time.time() - start) <= 5:
+        while (time.time() - start) <= round_duration:
             current_round_must_update = True
 
             subscribe(cummare_server=cummare_server, topic="current_lottery", process_function=update_lottery)
@@ -66,5 +67,4 @@ if __name__ == '__main__':
                         topic="current_lottery",
                         message=str(json.dumps(current_lottery)))
 
-
-            sleep(0.1)
+            sleep(round_duration/10)
