@@ -15,6 +15,8 @@ import redis
 
 import base64
 
+import sys
+
 random_requests = {}
 """
 Random requests to solve
@@ -37,7 +39,7 @@ def push_random_requests(random_request):
     # Add to requests if not exists
     if random_request_without_timestamp_as_string not in random_requests:
         # Set as not solved
-        random_requests[random_request_without_timestamp_as_string] = False
+        random_requests[random_request_without_timestamp_as_string] = int(sys.argv[1])
 
 
 if __name__ == '__main__':
@@ -89,7 +91,7 @@ if __name__ == '__main__':
             random_request_object = json.loads(random_request)
 
             # Not solved
-            if not random_requests[random_request]:
+            if random_requests[random_request] > 0:
 
                 # If queue is valid
                 if random_request_object['queue'] in redis_lists:
@@ -113,7 +115,7 @@ if __name__ == '__main__':
                     random_response_solved['data'] = base64.b64encode(encrypt_message_string.encode(MESSAGE_ENCODING)).decode()
 
                     # Set request as solved
-                    random_requests[random_request] = True
+                    random_requests[random_request] = random_requests[random_request] - 1
 
                     # Send response
                     publish(cummare_server=cummare_server, topic=random_responses_topic, message=str(json.dumps(random_response_solved)))
